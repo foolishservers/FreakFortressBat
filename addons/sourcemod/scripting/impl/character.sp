@@ -666,7 +666,7 @@ void LoadCharacter(const char[] character)
 		{
 			static char plugin_name[64];
 			KvGetString(FF2CharSetInfo.BossKV[FF2CharSetInfo.SizeOfSpecials], "plugin_name", plugin_name, 64);
-			BuildPath(Path_SM, config, sizeof(config), "plugins/freaks/%s.smx", plugin_name);
+			BuildPath(Path_SM, config, sizeof(config), "plugins/disabled/freaks/%s.smx", plugin_name);
 			if(!FileExists(config))
 			{
 				LogToFile(FF2LogsPaths.Errors, "[Boss] Character %s needs plugin %s!", character, plugin_name);
@@ -971,54 +971,45 @@ void CacheDifficulty()
 	}
 }
 
-
 void EnableSubPlugins(bool force=false)
 {
-	if(FF2Globals.AreSubpluginEnabled && !force)
-		return;
+    if(FF2Globals.AreSubpluginEnabled && !force)
+        return;
 
-	FF2Globals.AreSubpluginEnabled = true;
-	char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH], filename_old[PLATFORM_MAX_PATH];
-	BuildPath(Path_SM, path, sizeof(path), "plugins/freaks");
-	FileType filetype;
-	DirectoryListing directory = OpenDirectory(path);
-	while(directory.GetNext(filename, sizeof(filename), filetype))
+    FF2Globals.AreSubpluginEnabled = true;
+    char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH], filename_old[PLATFORM_MAX_PATH];
+    BuildPath(Path_SM, path, sizeof(path), "plugins/disabled/freaks");
+    FileType filetype;
+    DirectoryListing directory = OpenDirectory(path);
+ 	while(directory.GetNext(filename, sizeof(filename), filetype))
 	{
-		if(filetype==FileType_File && StrContains(filename, ".ff2", false)!=-1)
+		if(filetype==FileType_File && StrContains(filename, ".smx", false)!=-1)
 		{
-			FormatEx(filename_old, sizeof(filename_old), "%s/%s", path, filename);
-			ReplaceString(filename, sizeof(filename), ".ff2", ".smx", false);
-			Format(filename, sizeof(filename), "%s/%s", path, filename);
-			DeleteFile(filename); // Just in case filename.smx also exists: delete it and replace it with the new .smx version
-			RenameFile(filename, filename_old);
-			ServerCommand("sm plugins load freaks/%s", filename);
-		}
-	}
-	delete directory;
+            ServerCommand("sm plugins load disabled/freaks/%s", filename);
+        }
+    }
+    delete directory;
 }
 
 void DisableSubPlugins(bool force=false)
 {
-	if(!FF2Globals.AreSubpluginEnabled && !force)
-		return;
+    if(!FF2Globals.AreSubpluginEnabled && !force)
+        return;
 
-	char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH];
-	BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/freaks");
-	FileType filetype;
-	DirectoryListing directory = OpenDirectory(path);
-	while(directory.GetNext(filename, sizeof(filename), filetype))
-	{
-		if(filetype==FileType_File && StrContains(filename, ".smx", false)!=-1)
-		{
-			InsertServerCommand("sm plugins unload freaks/%s", filename);  // ServerCommand will not work when switching maps
-
-			Format(filename, sizeof(filename), "%s/%s", path, filename);
-			DeleteFile(filename);	// Remove smx so we don't load it in automatically
-		}
-	}
-	ServerExecute();
-	FF2Globals.AreSubpluginEnabled = false;
-	delete directory;
+    char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH];
+    BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/disabled/freaks");
+    FileType filetype;
+    DirectoryListing directory = OpenDirectory(path);
+    while(directory.GetNext(filename, sizeof(filename), filetype))
+    {
+        if(filetype==FileType_File && StrContains(filename, ".smx", false)!=-1)
+        {
+            InsertServerCommand("sm plugins unload disabled/freaks/%s", filename);  // ServerCommand will not work when switching maps
+        }
+    }
+    ServerExecute();
+    FF2Globals.AreSubpluginEnabled = false;
+    delete directory;
 }
 
 void LoadDifficulty(int boss)

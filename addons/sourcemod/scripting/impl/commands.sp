@@ -515,7 +515,7 @@ Action Command_ReloadSubPlugins(int client, int args)
 
 	static char pluginName[80], filepath[PLATFORM_MAX_PATH];
 	GetCmdArg(1, pluginName, sizeof(pluginName));
-	BuildPath(Path_SM, filepath, sizeof(filepath), "plugins/freaks/%s.smx", pluginName);
+	BuildPath(Path_SM, filepath, sizeof(filepath), "plugins/disabled/freaks/%s.smx", pluginName);
 	if(!FileExists(filepath))
 	{
 		FReplyToCommand(client, "Subplugin %s does not exist!", pluginName);

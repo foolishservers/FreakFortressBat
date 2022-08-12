@@ -108,9 +108,9 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 {
 	char plugin[PLATFORM_MAX_PATH];
 	GetPluginFilename(myself, plugin, sizeof(plugin));
-	if(!StrContains(plugin, "freaks/"))  //Prevent plugins/freaks/freak_fortress_2 from loading if it exists -.-
+	if(!StrContains(plugin, "disabled/freaks/"))  //Prevent plugins/freaks/freak_fortress_2 from loading if it exists -.-
 	{
-		strcopy(error, err_max, "There is a duplicate copy of Freak Fortress 2 inside the /plugins/freaks folder.  Please remove it");
+		strcopy(error, err_max, "There is a duplicate copy of Freak Fortress 2 inside the /plugins/disabled/freaks folder.  Please remove it");
 		return APLRes_Failure;
 	}
 
