@@ -973,43 +973,43 @@ void CacheDifficulty()
 
 void EnableSubPlugins(bool force=false)
 {
-    if(FF2Globals.AreSubpluginEnabled && !force)
-        return;
-
-    FF2Globals.AreSubpluginEnabled = true;
-    char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH], filename_old[PLATFORM_MAX_PATH];
-    BuildPath(Path_SM, path, sizeof(path), "plugins/disabled/freaks");
-    FileType filetype;
-    DirectoryListing directory = OpenDirectory(path);
- 	while(directory.GetNext(filename, sizeof(filename), filetype))
+	if(FF2Globals.AreSubpluginEnabled && !force)
+		return;
+	
+	FF2Globals.AreSubpluginEnabled = true;
+	char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH];
+	BuildPath(Path_SM, path, sizeof(path), "plugins/disabled/freaks");
+	FileType filetype;
+	DirectoryListing directory = OpenDirectory(path);
+	while(directory.GetNext(filename, sizeof(filename), filetype))
 	{
 		if(filetype==FileType_File && StrContains(filename, ".smx", false)!=-1)
 		{
-            ServerCommand("sm plugins load disabled/freaks/%s", filename);
-        }
-    }
-    delete directory;
+			ServerCommand("sm plugins load disabled/freaks/%s", filename);
+		}
+	}
+	delete directory;
 }
 
 void DisableSubPlugins(bool force=false)
 {
-    if(!FF2Globals.AreSubpluginEnabled && !force)
-        return;
-
-    char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH];
-    BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/disabled/freaks");
-    FileType filetype;
-    DirectoryListing directory = OpenDirectory(path);
-    while(directory.GetNext(filename, sizeof(filename), filetype))
-    {
-        if(filetype==FileType_File && StrContains(filename, ".smx", false)!=-1)
-        {
-            InsertServerCommand("sm plugins unload disabled/freaks/%s", filename);  // ServerCommand will not work when switching maps
-        }
-    }
-    ServerExecute();
-    FF2Globals.AreSubpluginEnabled = false;
-    delete directory;
+	if(!FF2Globals.AreSubpluginEnabled && !force)
+		return;
+	
+	char path[PLATFORM_MAX_PATH], filename[PLATFORM_MAX_PATH];
+	BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/disabled/freaks");
+	FileType filetype;
+	DirectoryListing directory = OpenDirectory(path);
+	while(directory.GetNext(filename, sizeof(filename), filetype))
+	{
+		if(filetype==FileType_File && StrContains(filename, ".smx", false)!=-1)
+		{
+			InsertServerCommand("sm plugins unload disabled/freaks/%s", filename);  // ServerCommand will not work when switching maps
+		}
+	}
+	ServerExecute();
+	FF2Globals.AreSubpluginEnabled = false;
+	delete directory;
 }
 
 void LoadDifficulty(int boss)
@@ -1068,4 +1068,64 @@ void LoadDifficulty(int boss)
 		} while(KvGotoNextKey(FF2ModsInfo.DiffCfg));
 		break;
 	} while(KvGotoNextKey(FF2ModsInfo.DiffCfg));
+}
+
+void PickRandomCharset()
+{
+	if(FF2CharSetInfo.IsCharSetSelected)
+		return;
+	
+	char config[PLATFORM_MAX_PATH];
+	BuildPath(Path_SM, config, sizeof(config), "%s/%s", FF2CharSetInfo.UseOldCharSetPath ? ConfigPath : DataPath, CharsetCFG);
+
+	Handle Kv = CreateKeyValues("");
+	FileToKeyValues(Kv, config);
+	int total, charsets;
+
+	do
+	{
+		total++;
+		if(!KvGetNum(Kv, "hidden"))
+			charsets++;
+	}
+	while(KvGotoNextKey(Kv));
+
+	delete Kv;
+	//PrintToConsoleAll("%i", total);
+	if(total < 2)
+		return;
+	
+	//PrintToConsoleAll("Rewind");
+	char[][] charset = new char[total][42];
+	int[] validCharsets = new int[total];
+	total = 0;
+	charsets = 0;
+	// KvRewind hates me...
+	Kv = CreateKeyValues("");
+	FileToKeyValues(Kv, config);
+	do
+	{
+		if(KvGetNum(Kv, "hidden"))	//Hidden charsets are hidden for a reason :P
+		{
+			//PrintToConsoleAll("Skip %i %i", total, charsets);
+			total++;
+			continue;
+		}
+
+		validCharsets[charsets] = total;
+		KvGetSectionName(Kv, charset[total], 42);
+		//PrintToConsoleAll("%s %i %i", charset[total], total, charsets);
+		charsets++;
+		total++;
+	}
+	while(KvGotoNextKey(Kv));
+
+	delete Kv;
+	
+	char nextmap[32];
+	ConVars.Charset.IntValue = validCharsets[GetRandomInt(0, charsets-1)];
+	
+	ConVars.Nextmap.GetString(nextmap, sizeof(nextmap));
+	FPrintToChatAll("%t", "nextmap_charset", nextmap, FF2CharSetInfo.CurrentCharSet);	//"The character set for {1} will be {2}."
+	FF2CharSetInfo.IsCharSetSelected = true;
 }

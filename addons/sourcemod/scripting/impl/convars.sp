@@ -467,5 +467,8 @@ static void CvarChange(ConVar convar, const char[] oldValue, const char[] newVal
 static void CvarChangeNextmap(ConVar convar, const char[] oldValue, const char[] newValue)
 {
 	if(Utils_IsFF2Map(newValue))
-		CreateTimer(0.1, Timer_DisplayCharsetVote, _, TIMER_FLAG_NO_MAPCHANGE);
+	{
+		PickRandomCharset();
+		//CreateTimer(0.1, Timer_DisplayCharsetVote, _, TIMER_FLAG_NO_MAPCHANGE);
+	}
 }
