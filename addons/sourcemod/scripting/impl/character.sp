@@ -1072,8 +1072,10 @@ void LoadDifficulty(int boss)
 
 void PickRandomCharset()
 {
+	/*
 	if(FF2CharSetInfo.IsCharSetSelected)
 		return;
+	*/
 	
 	char config[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, config, sizeof(config), "%s/%s", FF2CharSetInfo.UseOldCharSetPath ? ConfigPath : DataPath, CharsetCFG);
@@ -1122,10 +1124,14 @@ void PickRandomCharset()
 
 	delete Kv;
 	
+	int index = validCharsets[GetRandomInt(0, charsets-1)];
 	char nextmap[32];
-	ConVars.Charset.IntValue = validCharsets[GetRandomInt(0, charsets-1)];
+	
+	strcopy(FF2CharSetInfo.CurrentCharSet, sizeof(FF2CharSetInfo.CurrentCharSet), charset[index]);
+	ConVars.Charset.IntValue = validCharsets[index];
 	
 	ConVars.Nextmap.GetString(nextmap, sizeof(nextmap));
 	FPrintToChatAll("%t", "nextmap_charset", nextmap, FF2CharSetInfo.CurrentCharSet);	//"The character set for {1} will be {2}."
+	
 	FF2CharSetInfo.IsCharSetSelected = true;
 }
