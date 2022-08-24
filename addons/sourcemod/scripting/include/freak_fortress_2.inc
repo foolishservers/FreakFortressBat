@@ -45,7 +45,7 @@ native bool FF2_IsFF2Enabled();
  *
  * @return		True if the server is running a dev version of FF2, false otherwise
  */
-native bool FF2_GetFF2Version(int[] version=0);
+native bool FF2_GetFF2Version(int[] version={0, 0, 0});
 
 /**
  * Is Boss vs Boss mode enabled?
@@ -66,7 +66,7 @@ native bool FF2_IsBossVsBoss();
  *
  * @return		True if the server has a sub name defined, false otherwise
  */
-native bool FF2_GetForkVersion(int[] fversion=0);
+native bool FF2_GetForkVersion(int[] fversion={0, 0, 0});
 
 /**
  * Gets current round state
