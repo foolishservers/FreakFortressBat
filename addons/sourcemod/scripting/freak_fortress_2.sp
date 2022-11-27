@@ -52,6 +52,8 @@ last time or to encourage others to do the same.
 #include <sdkhooks>
 #include <tf2_stocks>
 #include <tf2items>
+#include <nativevotes>
+#include <umc-core>
 #undef REQUIRE_EXTENSIONS
 #tryinclude <steamtools>
 #tryinclude <SteamWorks>

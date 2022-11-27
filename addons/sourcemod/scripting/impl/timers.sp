@@ -2699,7 +2699,8 @@ Action Timer_DisplayCharsetVote(Handle timer)
 	if(FF2CharSetInfo.IsCharSetSelected)
 		return Plugin_Continue;
 
-	if(IsVoteInProgress())
+	//if(IsVoteInProgress())
+	if(NativeVotes_IsVoteInProgress())
 	{
 		CreateTimer(5.0, Timer_DisplayCharsetVote, _, TIMER_FLAG_NO_MAPCHANGE);  //Try again in 5 seconds if there's a different vote going on
 		return Plugin_Continue;
