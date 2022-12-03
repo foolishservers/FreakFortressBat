@@ -2041,9 +2041,9 @@ void Utils_RandomlyDisguise(int client)	//Original code was mecha's, but the ori
 		else
 		{
 			TF2_AddCondition(client, TFCond_Disguised, -1.0);
+			SetEntPropEnt(client, Prop_Send, "m_hDisguiseTarget" , disguiseTarget);
 			SetEntProp(client, Prop_Send, "m_nDisguiseTeam", team);
 			SetEntProp(client, Prop_Send, "m_nDisguiseClass", GetRandomInt(0, 1) ? view_as<int>(TFClass_Medic) : view_as<int>(TFClass_Scout));
-			SetEntProp(client, Prop_Send, "m_iDisguiseTargetIndex", disguiseTarget);
 			SetEntProp(client, Prop_Send, "m_iDisguiseHealth", 200);
 		}
 	}

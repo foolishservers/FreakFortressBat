@@ -365,7 +365,7 @@ Action ClientTimer(Handle timer)
 			//model as the players they potentially disguise as if they have a custom model (tf2attributes required)
 			if(Utils_IsValidClient(client))
 			{
-				iDisguisedTarget = GetEntProp(client, Prop_Send, "m_iDisguiseTargetIndex");
+				iDisguisedTarget = GetEntPropEnt(client, Prop_Send, "m_hDisguiseTarget");
 				Utils_VisionFlags_Update(client);
 
 				if(TF2_IsPlayerInCondition(client, TFCond_Disguised) && Utils_IsValidClient(iDisguisedTarget) && TF2_GetPlayerClass(iDisguisedTarget)==view_as<TFClassType>(GetEntProp(client, Prop_Send, "m_nDisguiseClass")))

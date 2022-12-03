@@ -2824,7 +2824,7 @@ public Action HookSound(int clients[64], int &numClients, char sound[PLATFORM_MA
 
 	if(TF2_IsPlayerInCondition(client, TFCond_Disguised))
 	{
-		int iDisguisedTarget = GetEntProp(client, Prop_Send, "m_iDisguiseTargetIndex");
+		int iDisguisedTarget = GetEntPropEnt(client, Prop_Send, "m_hDisguiseTarget");
 		int iDisguisedClass = GetEntProp(client, Prop_Send, "m_nDisguiseClass");
 		int disguiseboss = Utils_GetBossIndex(iDisguisedTarget);
 
