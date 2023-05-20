@@ -34,7 +34,7 @@ FF2DataBase_t FF2DataBase;
 int ClientPoint[MAXTF2PLAYERS];
 int ClientID[MAXTF2PLAYERS];
 int ClientQueue[MAXTF2PLAYERS][2];
-bool InfiniteRageActive[MAXTF2PLAYERS] = false;
+bool InfiniteRageActive[MAXTF2PLAYERS] = { false, ... };
 
 // Preferences
 enum struct FF2PlayerCookie_t
