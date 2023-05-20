@@ -159,7 +159,7 @@ void ConVars_AddChangeHooks()
     ConVars.StartingUber.AddChangeHook(CvarChange);
     ConVars.Health.AddChangeHook(CvarChange);
     ConVars.RageDamage.AddChangeHook(CvarChange);
-    //(ConVars.Nextmap=FindConVar("sm_nextmap")).AddChangeHook(CvarChangeNextmap);
+    (ConVars.Nextmap=FindConVar("sm_nextmap")).AddChangeHook(CvarChangeNextmap);
 }
 
 void ConVars_CreateCommands()
@@ -468,15 +468,17 @@ static void CvarChangeNextmap(ConVar convar, const char[] oldValue, const char[]
 {
 	if(Utils_IsFF2Map(newValue))
 	{
-		//PickRandomCharset();
-		CreateTimer(0.1, Timer_DisplayCharsetVote, _, TIMER_FLAG_NO_MAPCHANGE);
+		PickRandomCharset();
+		//CreateTimer(0.1, Timer_DisplayCharsetVote, _, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
-
+/*
 public void UMC_OnNextmapSet(Handle kv, const char[] map, const char[] group, const char[] display)
 {
 	if(Utils_IsFF2Map(map))
 	{
-		CreateTimer(0.1, Timer_DisplayCharsetVote, _, TIMER_FLAG_NO_MAPCHANGE);
+		PickRandomCharset();
+		//CreateTimer(0.1, Timer_DisplayCharsetVote, _, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
+*/

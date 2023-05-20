@@ -34,7 +34,7 @@
 #define MAXRANDOMS 64				// Maximum abilites in a boss
 #define MAXTF2PLAYERS 36			// Maximum TF2 players + bots
 #define MAXBOSSES RoundToFloor(MaxClients/2.0)	// Maximum number of bosses per a team
-#define MAXCHARSETS 7				// Maximum number of charsets to save selection/view
+#define MAXCHARSETS 64				// Maximum number of charsets to save selection/view
 
 #define HEALTHBAR_CLASS "monster_resource"
 #define HEALTHBAR_PROPERTY "m_iBossHealthPercentageByte"
