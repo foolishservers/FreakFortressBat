@@ -67,6 +67,11 @@ public void OnRebuildAdminCache(AdminCachePart part)
 
 public void OnClientPostAdminCheck(int client)
 {
+	if(!client)
+	{
+		return;
+	}
+	
 	// TODO: Hook these inside of EnableFF2() or somewhere instead
 	SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage);
 	SDKHook(client, SDKHook_OnTakeDamagePost, OnTakeDamagePost);
